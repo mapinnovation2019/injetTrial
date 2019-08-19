@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <title>InjetTV - Produtividade Planta</title>
+        <meta charset=UTF-8>
+        <meta name=viewport content="width=device-width, initial-scale=1">
+        <link rel=stylesheet href=/assets/css/materialize.min.css />
+        <link rel=stylesheet href=/styles/css/produtividade.css />
+        <link href=https://fonts.googleapis.com/icon?family=Material+Icons rel=stylesheet>
+        <script src=/assets/jquery.min.js></script>
+        <script>
+            let secondsTransition = '<%=secondsTransition%>';
+            let nextPage = '<%=nextPage%>';
+        </script>
+        <script>
+            setInterval(() => window.location.reload(), 15000);
+            function pegaRadio() {
+                var TempoAtt = document.getElementById("TempoAtt");
+                document.getElementById("TempoAtt").onclick = function() {
+                    var radios = document.getElementsByName("selTime");
+                    for (var i = 0; i < radios.length; i++) {
+                        if (radios[i].checked) {
+                            console.log("Escolheu: " + radios[i].value);
+                            setInterval(() => window.location.reload(), radios[i].value);
+                        }
+                    }
+                };
+            }
+        </script>
+    </head>
+    <body style="background-color: <%=cor_fundo%>">
+            <img src="<%=logo%>" alt=logo width=100 height=100>
+            <main>
+                <div class=row>
+                    <!-- <div id=time class="centered">
+                        <div class="row">
+                            <div class="container">
+                            <h6>Tempo de atualização da página</h6>   
+                        <form action=TempoAtt id=TempoAtt name=TempoAtt onclick="pegaRadio()">
+                            <p>
+                            <div class="col s1">        
+                                <label>
+                                <input id=1000 value=1000 type=radio name=selTime checked/>
+                                <span>15s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">        
+                            
+                                <label>
+                                <input id=20000 value=20000 type=radio name=selTime />
+                                <span>20s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">
+                            
+                                <label>
+                                <input id=25000 value=25000 type="radio" name=selTime />
+                                <span>25s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">
+                            
+                                <label>
+                                <input id=30000 value=30000 type="radio" name=selTime />
+                                <span>30s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">
+                            
+                                <label>
+                                <input id=40000 value=40000 type="radio" name=selTime />
+                                <span>40s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">
+                            
+                                <label>
+                                <input id=60000 value=60000 type="radio" name=selTime />
+                                <span>60s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">
+                            
+                                <label>
+                                <input id=90000 value=90000 type="radio" name=selTime />
+                                <span>90s</span>
+                                </label>
+                            </div>
+                            <div class="col s1">
+                            
+                                <label>
+                                <input id=120000 value=120000 type="radio" name=selTime />
+                                <span>120s</span>
+                                </label>
+                            </div>
+                            </div>
+                        </p>
+                            </div>
+                            </div> -->
+                <h1 class=center-align>Produtividade <span id=galpao></span></h1>
+                <div>
+                    <div class="row speedometer">
+                        <div class="col l3">
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class="row flex center-align">
+                                <div class=canvas-container>
+                                    <canvas class=Gauge id=eficiencia></canvas>
+                                </div>
+                            </div>
+                            <div class="row center-align">
+                                <strong>Eficiência (<span id=eficienciaValue><%=velocimetro.indicadores.eficiencia%></span>)</strong>
+                            </div>
+                        </div>
+                        <div class="col l3">
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class="row flex">
+                                <div class=canvas-container>
+                                    <canvas class=Gauge id=oee></canvas>
+                                </div>
+                            </div>
+                            <div class="row center-align">
+                                <strong>OEE (<span id=oeeValue><%=velocimetro.indicadores.indOEE%></span>)</strong>
+                            </div>
+                        </div>
+                        <div class="col l3">
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class="row flex">
+                                <div class=canvas-container>
+                                    <canvas class=Gauge id=utilizacao></canvas>
+                                </div>
+                            </div>
+                            <div class="row center-align">
+                                <strong>Utilização (<span id=utilizacaoValue><%=velocimetro.indicadores.indUtilizacao%></span>)</strong>
+                            </div>
+                        </div>
+                        <div class="col l3">
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class=row></div>
+                            <div class="row flex">
+                                <div class=canvas-container>
+                                    <canvas class=Gauge id=refugo></canvas>
+                                </div>
+                            </div>
+                            <div class="row center-align">
+                                <strong>Refugo (<span id=refugoValue><%=velocimetro.indicadores.indRef%></span>)</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col l12">
+                        <div class=row>
+                            <table class="centered striped">
+                                <thead>
+                                    <th></th>
+                                    <% turnos.forEach(function(turno){ %>
+                                        <th><%=turno.dsTurno%></th>
+                                    <% }); %>
+                                    <th>Acumulado mês</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>% Produtividade OEE</td>
+                                        <% bi.indicadoresTurno.forEach(function(indicadoresTurno){ %>
+                                            <td><%=indicadoresTurno.indicadores.indOEE%>%</td>
+                                        <% }); %>
+                                        <td><%=bi.indicadores.indOEE%>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>% Eficiência</td>
+                                        <% bi.indicadoresTurno.forEach(function(indicadoresTurno){ %>
+                                            <td><%=indicadoresTurno.indicadores.eficiencia%>%</td>
+                                        <% }); %>
+                                        <td><%=bi.indicadores.eficiencia%>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>% Utilização</td>
+                                        <% bi.indicadoresTurno.forEach(function(indicadoresTurno){ %>
+                                            <td><%=indicadoresTurno.indicadores.indUtilizacao%>%</td>
+                                        <% }); %>
+                                        <td><%=bi.indicadores.indUtilizacao%>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>% Refugo</td>
+                                        <% bi.indicadoresTurno.forEach(function(indicadoresTurno){ %>
+                                            <td><%=indicadoresTurno.indicadores.indRef%>%</td>
+                                        <% }); %>
+                                        <td><%=bi.indicadores.indRef%>%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src=/assets/jquery.min.js></script>
+        <script src=/lib/gauge.js></script>
+        <script src=/scripts/gauge.js></script>
+    </body>
+</html>
